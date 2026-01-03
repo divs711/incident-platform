@@ -12,5 +12,10 @@ public interface IncidentRepository
         extends JpaRepository<Incident, Long> {
 
     List<Incident> findByStatus(IncidentStatus status);
+
+    boolean existsByServiceAndStatus(
+            String service,
+            IncidentStatus status
+    );
 }
 

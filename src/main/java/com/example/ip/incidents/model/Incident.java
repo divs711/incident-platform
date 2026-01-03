@@ -25,6 +25,8 @@ public class Incident {
     @Enumerated(EnumType.STRING)
     private Severity severity;
 
+    private String service;
+
     private Instant openedAt;
 }
 

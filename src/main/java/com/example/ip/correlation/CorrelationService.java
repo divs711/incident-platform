@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CorrelationService {
@@ -31,11 +33,28 @@ public class CorrelationService {
                         Instant.now().minusSeconds(300)
                 );
 
-        if (recent.size() > 5) {
+        Map<String, List<Event>> byService =
+                recent.stream()
+                        .collect(Collectors.groupingBy(Event::getService));
+
+        for (var entry : byService.entrySet()) {
+            String service = entry.getKey();
+            List<Event> events = entry.getValue();
+
+            if (events.size() < 5) continue;
+
+            boolean exists = incidentRepo.existsByServiceAndStatus(
+                            service,
+                            IncidentStatus.OPEN);
+
+            if (exists) continue;
+
             Incident incident = new Incident();
+            incident.setService(service);
             incident.setStatus(IncidentStatus.OPEN);
             incident.setSeverity(Severity.HIGH);
             incident.setOpenedAt(Instant.now());
+
             incidentRepo.save(incident);
         }
     }

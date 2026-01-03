@@ -9,9 +9,10 @@ public class GeminiAnalyzer implements AiAnalyzer {
 
     @Override
     public AiInsight analyze(Incident incident) {
-        return new AiInsight(
-                "Likely spike in error rate",
-                0.7
-        );
+//        return new AiInsight(
+//                "Likely spike in error rate",
+//                0.7
+//        );
+        return null;
     }
 }
