@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,12 +19,16 @@ public class IncidentResponse {
     public Long id;
     public Severity severity;
     public IncidentStatus status;
+    public String service;
+    public Instant openedAt;
 
     public static IncidentResponse from(Incident i) {
         IncidentResponse r = new IncidentResponse();
         r.id = i.getId();
         r.severity = i.getSeverity();
         r.status = i.getStatus();
+        r.service = i.getService();
+        r.openedAt = i.getOpenedAt();
         return r;
     }
 }

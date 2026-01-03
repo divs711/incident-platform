@@ -6,6 +6,7 @@ import com.example.ip.incidents.model.Severity;
 import com.example.ip.incidents.repository.IncidentRepository;
 import com.example.ip.ingestion.model.Event;
 import com.example.ip.ingestion.repository.EventRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -14,22 +15,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CorrelationService {
 
     private final EventRepository eventRepo;
     private final IncidentRepository incidentRepo;
 
-    public CorrelationService(
-            EventRepository eventRepo,
-            IncidentRepository incidentRepo
-    ) {
-        this.eventRepo = eventRepo;
-        this.incidentRepo = incidentRepo;
-    }
 
     public void correlate() {
-        List<Event> recent =
-                eventRepo.findByTimestampAfter(
+        List<Event> recent = eventRepo.findByTimestampAfter(
                         Instant.now().minusSeconds(300)
                 );
 
